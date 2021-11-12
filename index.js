@@ -25,8 +25,7 @@ async function run() {
     await client.connect();
     const database = client.db("filmy-db");
     const filmyCollection = database.collection("filmy");
-    
-    // const usersCollection = database.collection('users');
+    const usersCollection = database.collection('users');
     console.log("database connected");
 
 
@@ -44,6 +43,13 @@ app.get("/film/:id", async(req, res) => {
     const query = { _id: ObjectId(id)};
     const oneFilm = await filmyCollection.findOne(query);
     res.send(oneFilm);
+    });
+
+    app.post('/users', async (req, res) => {
+        const user = req.body;
+        const result = await usersCollection.insertOne(user);
+        console.log(result);
+        res.json(result);
     });
 
 
@@ -113,12 +119,7 @@ res.send(deleteUser)
 });
 
 
-    app.post('/users', async (req, res) => {
-        const user = req.body;
-        const result = await usersCollection.insertOne(user);
-        console.log(result);
-        res.json(result);
-    });
+    
 
 
         app.get('/users/:email', async (req, res) => {
