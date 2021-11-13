@@ -28,8 +28,6 @@ async function run() {
     const usersCollection = database.collection('users');
     console.log("database connected");
 
-
-
     // GET API for find multiple data.
 app.get("/filmy", async(req, res) => {
     const cursor = filmyCollection.find({});
@@ -53,12 +51,13 @@ app.get("/film/:id", async(req, res) => {
     });
 
 
-app.get('/filmy', async (req,res)=>{
+
+app.get('/user', async (req,res)=>{
     const email = req.query.email;
     const query = {email:email};
-    const cursor = filmyCollection.find(query);
-    const appointments = await cursor.toArray();
-    res.json(appointments);
+    const cursor = usersCollection.find(query);
+    const orders = await cursor.toArray();
+    res.json(orders);
 });
 
 
