@@ -45,6 +45,7 @@ app.get("/film/:id", async(req, res) => {
     res.send(oneFilm);
     });
 
+
     app.post('/users', async (req, res) => {
         const user = req.body;
         const result = await usersCollection.insertOne(user);
@@ -78,6 +79,13 @@ app.delete("/user/:id", async(req, res) => {
     res.send(deleteUser)
     });
 
+app.delete("/service/:id", async(req, res) => {
+    const id = req.params.id;
+    const query = { _id: ObjectId(id) };
+    const deleteUser = await  usersCollection.deleteOne(query);
+    res.send(deleteUser)
+    });
+
     // POST API for create single data
     app.post('/person', async (req,res)=>{
         const user = req.body;
@@ -98,7 +106,7 @@ app.get("/reviews", async(req, res) => {
 app.get("/service/:id", async(req, res) => {
 const id = req.params.id;
 const query = { _id: ObjectId(id)};
-const oneService = await servicesCollection.findOne(query);
+const oneService = await filmyCollection.findOne(query);
 res.send(oneService);
 });
 
@@ -115,7 +123,7 @@ const updateDoc = {
         price: updateService.price
     }
 }
-const updatedService = await servicesCollection.updateOne(filter, updateDoc, options);
+const updatedService = await filmyCollection.updateOne(filter, updateDoc, options);
 res.json(updatedService);
 
 });
@@ -126,7 +134,7 @@ res.json(updatedService);
         const query = { email: email };
         const user = await usersCollection.findOne(query);
         let isAdmin = false;
-        if (user?.role === 'admin') {
+        if (user?.role === "admin") {
             isAdmin = true;
         }
         res.json({ admin: isAdmin });
@@ -146,7 +154,7 @@ res.json(updatedService);
     app.put('/person/admin', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email };
-            const updateDoc = { $set: { role: 'admin' } };
+            const updateDoc = { $set: { role: "admin" } };
             const result = await personCollection.updateOne(filter, updateDoc);
             res.json(result);
         });
@@ -181,22 +189,3 @@ app.listen(PORT, (err) => {
     console.log(`Server listening on port ${PORT}`)
 })
 
-
-// app.post("/userInfo", async(req, res) => {
-// const user = req.body;
-// const singleUser = await userInfoCollection.insertOne(user);
-// res.json(singleUser);
-// });
-
-// app.get("/userInfo/:id", async(req, res) => {
-// const id = req.params.id;
-// const query = { _id: ObjectId(id)};
-// const findService = await userInfoCollection.findOne(query);
-// res.send(findService)
-// });
-
-// app.get("/usersInfo", async(req, res) => {
-// const cursor = userInfoCollection.find({});
-// const usersInfo = await cursor.toArray();
-// res.send(usersInfo);
-// });
