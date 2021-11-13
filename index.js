@@ -26,6 +26,7 @@ async function run() {
     const database = client.db("filmy-db");
     const filmyCollection = database.collection("filmy");
     const usersCollection = database.collection('users');
+    const reviewsCollection = database.collection('reviews');
     console.log("database connected");
 
     // GET API for find multiple data.
@@ -67,20 +68,20 @@ app.delete("/user/:id", async(req, res) => {
     res.send(deleteUser)
     });
 
-
-    app.post('/products', async (req,res)=>{
-        const product = req.body;
-        const result = await filmyCollection.insertOne(product);
+    app.post('/reviews', async (req,res)=>{
+        const review = req.body;
+        const result = await filmyCollection.insertOne(review);
         res.json(result);
     });
 
-    
+
 // GET API for find multiple data.
 app.get("/services", async(req, res) => {
     const cursor = servicesCollection.find({});
     const services = await cursor.toArray();
     res.send(services);
 });
+
 
 // GET API for find single data.
 app.get("/service/:id", async(req, res) => {
