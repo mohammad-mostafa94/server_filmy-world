@@ -103,13 +103,6 @@ res.send(oneService);
 });
 
 
-// POST API for create single data
-app.post("/service", async(req, res) => {
-const service = req.body;
-const singleService = await  servicesCollection.insertOne(service);
-res.json(singleService);
-});
-
 // API single data updated
 app.put("/update/:id", async(req, res) => {
 const id = req.params.id;
@@ -157,6 +150,16 @@ res.json(updatedService);
             const result = await personCollection.updateOne(filter, updateDoc);
             res.json(result);
         });
+
+        
+    app.put('/person', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: {email: user.email, name:user.name} };
+            const result = await personCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
+
 
     
 
