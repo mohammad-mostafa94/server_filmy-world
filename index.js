@@ -68,18 +68,20 @@ app.delete("/user/:id", async(req, res) => {
     res.send(deleteUser)
     });
 
+    // POST API for create single data
     app.post('/reviews', async (req,res)=>{
         const review = req.body;
-        const result = await filmyCollection.insertOne(review);
+        console.log(review);
+        const result = await reviewsCollection.insertOne(review);
         res.json(result);
     });
 
 
 // GET API for find multiple data.
-app.get("/services", async(req, res) => {
-    const cursor = servicesCollection.find({});
-    const services = await cursor.toArray();
-    res.send(services);
+app.get("/reviews", async(req, res) => {
+    const cursor = reviewsCollection.find({});
+    const reviews = await cursor.toArray();
+    res.send(reviews);
 });
 
 
