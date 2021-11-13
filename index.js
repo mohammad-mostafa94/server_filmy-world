@@ -5,7 +5,7 @@ require('dotenv').config();
 const { MongoClient } = require("mongodb");
 const ObjectId = require("mongodb").ObjectId;
 
-const app = express()
+const app = express();
 
 //required middlware
 app.use(cors());
@@ -51,7 +51,6 @@ app.get("/film/:id", async(req, res) => {
     });
 
 
-
 app.get('/user', async (req,res)=>{
     const email = req.query.email;
     const query = {email:email};
@@ -60,6 +59,13 @@ app.get('/user', async (req,res)=>{
     res.json(orders);
 });
 
+// delete api
+app.delete("/user/:id", async(req, res) => {
+    const id = req.params.id;
+    const query = { _id: ObjectId(id) };
+    const deleteUser = await  usersCollection.deleteOne(query);
+    res.send(deleteUser)
+    });
 
 
     app.post('/products', async (req,res)=>{
@@ -109,13 +115,7 @@ res.json(updatedService);
 
 });
 
-// delete api
-app.delete("/service/:id", async(req, res) => {
-const id = req.params.id;
-const query = { _id: ObjectId(id) };
-const deleteUser = await  servicesCollection.deleteOne(query);
-res.send(deleteUser)
-});
+
 
 
     
