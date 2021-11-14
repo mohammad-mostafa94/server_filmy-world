@@ -53,6 +53,12 @@ async function run() {
         });
 
         app.get('/user', async (req, res) => {
+            const cursor = usersCollection.find({});
+            const orders = await cursor.toArray();
+            res.json(orders);
+        });
+
+        app.get('/user', async (req, res) => {
             const email = req.query.email;
             const query = { email: email };
             const cursor = usersCollection.find(query);
@@ -66,6 +72,25 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const deleteUser = await usersCollection.deleteOne(query);
             res.send(deleteUser)
+        });
+
+        //update status data
+        app.put("/users/:id", async (req, res) => {
+            const id = req.params.id;
+            const updateStatus = "accepted";
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: updateStatus,
+                },
+            };
+            const updatedUsers = await usersCollection.updateOne(
+                filter,
+                updateDoc,
+                options
+            );
+            res.send(updatedUsers);
         });
 
 
@@ -128,8 +153,8 @@ async function run() {
             let isAdmin = false;
             if (person?.role === "admin") {
                 isAdmin = true;
-
             }
+            console.log(isAdmin);
             res.json(isAdmin);
         });
 
