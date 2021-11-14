@@ -124,10 +124,11 @@ async function run() {
         app.get('/persons/:email', async (req, res) => {
             const email = req.params.email;
             const query = { email: email };
-            const user = await usersCollection.findOne(query);
+            const person = await personCollection.findOne(query);
             let isAdmin = false;
-            if (user?.role === "admin") {
+            if (person?.role === "admin") {
                 isAdmin = true;
+
             }
             res.json(isAdmin);
         });
