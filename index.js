@@ -75,7 +75,7 @@ async function run() {
         });
 
         //update status data
-        app.put("/users/:id", async (req, res) => {
+        app.put("/user/:id", async (req, res) => {
             const id = req.params.id;
             const updateStatus = "accepted";
             const filter = { _id: ObjectId(id) };
