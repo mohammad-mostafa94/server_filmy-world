@@ -45,6 +45,13 @@ async function run() {
             res.send(oneFilm);
         });
 
+        app.post('/film', async (req, res) => {
+            const film = req.body;
+            const result = await filmyCollection.insertOne(film);
+            console.log(result);
+            res.json(result);
+        });
+
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
@@ -114,11 +121,8 @@ async function run() {
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewsCollection.insertOne(review);
-            console.log(result);
             res.json(result);
         });
-
-
 
         app.get('/person', async (req, res) => {
             const email = req.query.email;
