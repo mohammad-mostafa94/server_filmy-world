@@ -52,7 +52,7 @@ async function run() {
             res.json(result);
         });
 
-        app.get('/user', async (req, res) => {
+        app.get('/users', async (req, res) => {
             const cursor = usersCollection.find({});
             const orders = await cursor.toArray();
             res.json(orders);
