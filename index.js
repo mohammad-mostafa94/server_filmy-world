@@ -47,8 +47,8 @@ async function run() {
 
         app.post('/film', async (req, res) => {
             const film = req.body;
+            console.log(film);
             const result = await filmyCollection.insertOne(film);
-            console.log(result);
             res.json(result);
         });
 
