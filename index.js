@@ -45,6 +45,15 @@ async function run() {
             res.send(oneFilm);
         });
 
+        // delete api
+        app.delete("/film/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const deleteFilm = await filmyCollection.deleteOne(query);
+            res.send(deleteFilm)
+        });
+
+
         app.post('/film', async (req, res) => {
             const film = req.body;
             console.log(film);
