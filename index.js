@@ -151,7 +151,6 @@ async function run() {
 
         app.put('/person/admin', async (req, res) => {
             const user = req.body;
-            // const filter = { email: user.email };
             const options = { upsert: true };
             const updateDoc = { $set: { role: "admin" } };
             const result = await personCollection.updateOne(user, updateDoc, options);
@@ -213,22 +212,13 @@ async function run() {
             }
             const updatedService = await filmyCollection.updateOne(filter, updateDoc, options);
             res.json(updatedService);
-
         });
-
-
-
-
-
-
-
 
     } finally {
         //   await client.close();
     }
 }
 run().catch(console.dir);
-
 
 //Test server page running
 app.get('/', (req, res) => {
