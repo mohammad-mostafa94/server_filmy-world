@@ -152,8 +152,9 @@ async function run() {
         app.put('/person/admin', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email };
+            const options = { upsert: true };
             const updateDoc = { $set: { role: "admin" } };
-            const result = await personCollection.updateOne(filter, updateDoc);
+            const result = await personCollection.updateOne(filter, updateDoc, options);
             res.json(result);
         });
 
