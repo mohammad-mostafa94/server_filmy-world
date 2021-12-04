@@ -90,6 +90,15 @@ async function run() {
             res.send(deleteUser)
         });
 
+
+        // GET API for find
+        app.get("/user/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await usersCollection.findOne(query);
+            res.json(result);
+        })
+
         //update status data
         app.put("/user/:id", async (req, res) => {
             const id = req.params.id;
