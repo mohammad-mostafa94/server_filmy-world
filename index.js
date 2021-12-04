@@ -204,7 +204,7 @@ async function run() {
 
 
 
-
+        // API single data by ID
         app.delete("/service/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
