@@ -20,7 +20,6 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-
 async function run() {
     try {
 
@@ -54,7 +53,6 @@ async function run() {
             const deleteFilm = await filmyCollection.deleteOne(query);
             res.send(deleteFilm)
         });
-
 
         app.post('/film', async (req, res) => {
             const film = req.body;
@@ -101,16 +99,16 @@ async function run() {
             res.json(result);
         });
 
-        app.post('/create-payment-intent', async (req, res) => {
-            const paymentInfo = req.body;
-            const amount = paymentInfo.price * 100;//payment must be integer number
-            const paymentIntent = await stripe.paymentIntents.create({
-                currency: 'usd',
-                amount: amount,
-                payment_method_types: ['card']
-            });
-            res.json({ clientSecret: paymentIntent.client_secret })
-        });
+        // app.post('/create-payment-intent', async (req, res) => {
+        //     const paymentInfo = req.body;
+        //     const amount = paymentInfo.price * 100;//payment must be integer number
+        //     const paymentIntent = await stripe.paymentIntents.create({
+        //         currency: 'usd',
+        //         amount: amount,
+        //         payment_method_types: ['card']
+        //     });
+        //     res.json({ clientSecret: paymentIntent.client_secret })
+        // });
 
 
 
@@ -135,14 +133,7 @@ async function run() {
 
 
 
-        app.put('/persons', async (req, res) => {
-            const person = req.body;
-            const filter = { email: person.email };
-            const options = { upsert: true };
-            const updateDoc = { $set: person };
-            const result = await usersCollection.updateOne(filter, updateDoc, options);
-            res.json(result);
-        });
+
 
         // GET API for find multiple data.
         app.get("/reviews", async (req, res) => {
@@ -154,6 +145,15 @@ async function run() {
         app.post('/reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewsCollection.insertOne(review);
+            res.json(result);
+        });
+
+        app.put('/persons', async (req, res) => {
+            const person = req.body;
+            const filter = { email: person.email };
+            const options = { upsert: true };
+            const updateDoc = { $set: person };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
             res.json(result);
         });
 
