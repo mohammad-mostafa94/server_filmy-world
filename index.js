@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors')
+const cors = require('cors');
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
+
 require('dotenv').config();
 const { MongoClient } = require("mongodb");
 const ObjectId = require("mongodb").ObjectId;
@@ -91,13 +93,26 @@ async function run() {
         });
 
 
-        // GET API for find
+        // GET API for find single data
         app.get("/user/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await usersCollection.findOne(query);
             res.json(result);
-        })
+        });
+
+        app.post('/create-payment-intent', async (req, res) => {
+            const paymentInfo = req.body;
+            const amount = paymentInfo.price * 100;//payment must be integer number
+            const paymentIntent = await stripe.paymentIntents.create({
+                currency: 'usd',
+                amount: amount,
+                payment_method_types: ['card']
+            });
+            res.json({ clientSecret: paymentIntent.client_secret })
+        });
+
+
 
         //update status data
         app.put("/user/:id", async (req, res) => {
