@@ -1,13 +1,14 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const app = express();
 const cors = require('cors');
-const stripe = require('stripe')(process.env.STRIPE_SECRET)
-
 require('dotenv').config();
 const { MongoClient } = require("mongodb");
+const bodyParser = require('body-parser');
 const ObjectId = require("mongodb").ObjectId;
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
-const app = express();
+
+
 
 //required middlware
 app.use(cors());
@@ -123,10 +124,16 @@ async function run() {
                     status: updateStatus,
                 },
             };
+            const updatePayment = {
+                $set: {
+                    payment: payment
+                }
+            };
             const updatedUsers = await usersCollection.updateOne(
                 filter,
                 updateDoc,
-                options
+                options,
+                updatePayment
             );
             res.send(updatedUsers);
         });
