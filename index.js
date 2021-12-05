@@ -8,8 +8,6 @@ const ObjectId = require("mongodb").ObjectId;
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
 
-
-
 //required middlware
 app.use(cors());
 app.use(express.json());
@@ -111,8 +109,6 @@ async function run() {
             res.json({ clientSecret: paymentIntent.client_secret })
         });
 
-
-
         //update status data
         app.put("/user/:id", async (req, res) => {
             const id = req.params.id;
@@ -135,6 +131,7 @@ async function run() {
                 options,
                 updatePayment
             );
+            console.log(updatedUsers);
             res.send(updatedUsers);
         });
 
