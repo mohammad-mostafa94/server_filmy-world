@@ -55,7 +55,6 @@ async function run() {
 
         app.post('/film', async (req, res) => {
             const film = req.body;
-            console.log(film);
             const result = await filmyCollection.insertOne(film);
             res.json(result);
         });
@@ -63,7 +62,6 @@ async function run() {
         app.post('/users', async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
-            console.log(result);
             res.json(result);
         });
 
@@ -98,8 +96,25 @@ async function run() {
             res.json(result);
         });
 
+
+        //payment API
+        app.put('/payment/:id', async (req, res) => {
+            const id = req.params.id;
+            const payment = req.body;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    payment: payment
+                }
+            };
+            const result = await usersCollection.updateOne(filter, updateDoc);
+            res.json(result);
+        });
+
+
         app.post('/create-payment-intent', async (req, res) => {
             const paymentInfo = req.body;
+
             const amount = paymentInfo.price * 100;//payment must be integer number
             const paymentIntent = await stripe.paymentIntents.create({
                 currency: 'usd',
@@ -120,21 +135,14 @@ async function run() {
                     status: updateStatus,
                 },
             };
-            const updatePayment = {
-                $set: {
-                    payment: payment
-                }
-            };
+
             const updatedUsers = await usersCollection.updateOne(
                 filter,
                 updateDoc,
                 options,
-                updatePayment
             );
-            console.log(updatedUsers);
             res.send(updatedUsers);
         });
-
 
 
 
@@ -202,7 +210,6 @@ async function run() {
             if (person?.role === "admin") {
                 isAdmin = true;
             }
-            console.log(isAdmin);
             res.json(isAdmin);
         });
 
